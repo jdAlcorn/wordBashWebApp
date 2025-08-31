@@ -13,6 +13,9 @@ RUN npm ci --only=production
 COPY . .
 RUN rm -rf node_modules
 
+# Force rebuild timestamp
+RUN echo "Build timestamp: $(date)" > /tmp/build-time
+
 # Install all dependencies including dev dependencies for build
 RUN npm ci
 

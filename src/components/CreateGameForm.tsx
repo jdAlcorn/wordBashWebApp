@@ -37,8 +37,12 @@ export function CreateGameForm({ onSuccess, onError }: CreateGameFormProps) {
 
     try {
       const response = await createGame(name.trim());
+      
+      // Generate a simple player ID for now
+      const playerId = Math.random().toString(36).substring(2, 15);
+      
       savePlayerName(name.trim());
-      onSuccess(response.gameId, response.playerId, response.wsUrl, name.trim());
+      onSuccess(response.gameId, playerId, response.websocketUrl, name.trim());
     } catch (error) {
       onError(error instanceof Error ? error.message : 'Failed to create game');
     } finally {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createSession, getGameEndpoint } from '../lib/api';
+import { joinGame } from '../lib/api';
 import { savePlayerName, getPlayerName } from '../lib/storage';
 
 interface JoinGameFormProps {
@@ -46,18 +46,13 @@ export function JoinGameForm({ onSuccess, onError }: JoinGameFormProps) {
     setGameIdError('');
 
     try {
-      const sessionResponse = await createSession(name.trim());
-      const endpointResponse = await getGameEndpoint(gameId.trim());
+      const response = await joinGame(gameId.trim());
       
-      // Append playerId to wsUrl if not already present
-      let wsUrl = endpointResponse.wsUrl;
-      if (!wsUrl.includes('playerId=')) {
-        const separator = wsUrl.includes('?') ? '&' : '?';
-        wsUrl += `${separator}playerId=${sessionResponse.playerId}`;
-      }
+      // Generate a simple player ID for now
+      const playerId = Math.random().toString(36).substring(2, 15);
       
       savePlayerName(name.trim());
-      onSuccess(gameId.trim(), sessionResponse.playerId, wsUrl, name.trim());
+      onSuccess(gameId.trim(), playerId, response.websocketUrl, name.trim());
     } catch (error) {
       onError(error instanceof Error ? error.message : 'Failed to join game');
     } finally {

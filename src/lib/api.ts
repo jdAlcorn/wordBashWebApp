@@ -1,4 +1,4 @@
-import { CreateGameResponse, CreateSessionResponse, GameEndpointResponse, ConfigResponse } from './protocol';
+import { CreateGameResponse } from './protocol';
 
 // Use relative URLs when not on localhost, localhost in development
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
@@ -20,7 +20,10 @@ class ApiError extends Error {
 }
 
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${url}`, {
+  const fullUrl = `${API_BASE_URL}${url}`;
+  console.log('API Request:', fullUrl, options);
+  
+  const response = await fetch(fullUrl, {
     headers: {
       'Content-Type': 'application/json',
       ...options?.headers,
@@ -28,11 +31,23 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
     ...options,
   });
 
+  console.log('API Response:', response.status, response.statusText);
+  
   if (!response.ok) {
+    const errorText = await response.text();
+    console.log('API Error Response Body:', errorText);
     throw new ApiError(response.status, `HTTP ${response.status}: ${response.statusText}`);
   }
 
-  return response.json();
+  const responseText = await response.text();
+  console.log('API Response Body:', responseText);
+  
+  try {
+    return JSON.parse(responseText);
+  } catch (e) {
+    console.error('JSON Parse Error:', e, 'Response was:', responseText);
+    throw e;
+  }
 }
 
 export async function createGame(name: string): Promise<CreateGameResponse> {
@@ -42,17 +57,9 @@ export async function createGame(name: string): Promise<CreateGameResponse> {
   });
 }
 
-export async function createSession(name: string): Promise<CreateSessionResponse> {
-  return fetchJson<CreateSessionResponse>('/api/sessions', {
+export async function joinGame(gameId: string): Promise<CreateGameResponse> {
+  return fetchJson<CreateGameResponse>(`/api/games/${gameId}/join`, {
     method: 'POST',
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({}),
   });
-}
-
-export async function getGameEndpoint(gameId: string): Promise<GameEndpointResponse> {
-  return fetchJson<GameEndpointResponse>(`/api/games/${gameId}/endpoint`);
-}
-
-export async function getConfig(): Promise<ConfigResponse> {
-  return fetchJson<ConfigResponse>('/api/config');
 }

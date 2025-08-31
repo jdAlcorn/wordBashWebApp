@@ -36,8 +36,8 @@ export interface GameState {
 
 export interface CreateGameResponse {
   gameId: string;
-  playerId: string;
-  wsUrl: string;
+  websocketUrl: string;
+  name?: string;
 }
 
 export interface CreateSessionResponse {
