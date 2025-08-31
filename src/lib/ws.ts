@@ -7,6 +7,7 @@ export interface WSClientOptions {
   onStatusChange: (status: ConnectionStatus) => void;
   gameId: string;
   playerId: string;
+  playerName: string;
 }
 
 export class WSClient {
@@ -32,7 +33,7 @@ export class WSClient {
       this.options.onStatusChange('connected');
       this.reconnectAttempts = 0;
       this.startHeartbeat();
-      this.sendJoinGame();
+      this.sendJoinGame(this.options.playerName);
     };
 
     this.ws.onmessage = (event) => {
@@ -99,36 +100,32 @@ export class WSClient {
     }
   }
 
-  sendJoinGame(): void {
+  sendJoinGame(playerName: string): void {
     this.send({
       type: 'join_game',
-      gameId: this.options.gameId,
-      playerId: this.options.playerId,
+      player_id: this.options.playerId,
+      player_name: playerName,
     });
   }
 
   sendLeaveGame(): void {
     this.send({
       type: 'leave_game',
-      gameId: this.options.gameId,
-      playerId: this.options.playerId,
+      player_id: this.options.playerId,
     });
   }
 
   sendRequestState(): void {
     this.send({
       type: 'request_state',
-      gameId: this.options.gameId,
-      playerId: this.options.playerId,
     });
   }
 
   sendPlaceTiles(payload: PlaceTilesPayload): void {
     this.send({
       type: 'place_tiles',
-      gameId: this.options.gameId,
-      playerId: this.options.playerId,
-      payload,
+      player_id: this.options.playerId,
+      tiles: payload,
     });
   }
 
