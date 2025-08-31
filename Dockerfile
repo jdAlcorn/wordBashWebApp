@@ -24,14 +24,15 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install serve to serve static files
-RUN npm install -g serve
+# Force rebuild with timestamp
+RUN echo "Build time: $(date)" > /tmp/buildtime
 
-# Copy built app
+# Copy built app and server
 COPY --from=builder /app/dist ./dist
+COPY server.js ./
 
 # Expose port
 EXPOSE 8080
 
-# Serve the app on port 8080
-CMD ["serve", "-s", "dist", "-l", "8080"]
+# Run the server
+CMD ["node", "server.js"]
