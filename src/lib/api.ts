@@ -1,6 +1,16 @@
 import { CreateGameResponse, CreateSessionResponse, GameEndpointResponse, ConfigResponse } from './protocol';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+// Use relative URLs when not on localhost, localhost in development
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
+  (window.location.hostname === 'localhost' ? 'http://localhost:3000' : '');
+
+// Debug logging
+console.log('API Debug Info:', {
+  hostname: window.location.hostname,
+  VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+  PROD: import.meta.env.PROD,
+  final_API_BASE_URL: API_BASE_URL
+});
 
 class ApiError extends Error {
   constructor(public status: number, message: string) {
