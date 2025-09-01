@@ -1,9 +1,16 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
-const port = 8080;
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const port = 3000;
 const distPath = path.join(__dirname, 'dist');
 
 // MIME types
@@ -26,6 +33,10 @@ function generateGameId() {
 
 // Get WebSocket URL from environment or construct from host
 function getWebSocketUrl(req, gameId) {
+  const wsBaseUrl = process.env.WEBSOCKET_BASE_URL;
+  if (wsBaseUrl) {
+    return `${wsBaseUrl}/ws/${gameId}`;
+  }
   const host = req.headers.host;
   return `ws://${host}/ws/${gameId}`;
 }
