@@ -7,7 +7,8 @@ describe('WSClient', () => {
       onMessage: () => {},
       onStatusChange: () => {},
       gameId: 'GAME123',
-      playerId: 'player-1'
+      playerId: 'player-1',
+      playerName: 'Test Player'
     };
     
     const client = new WSClient('ws://localhost:8080', mockOptions);
@@ -19,7 +20,8 @@ describe('WSClient', () => {
       onMessage: () => {},
       onStatusChange: () => {},
       gameId: 'GAME123',
-      playerId: 'player-1'
+      playerId: 'player-1',
+      playerName: 'Test Player'
     };
     
     const client = new WSClient('ws://localhost:8080', mockOptions);

@@ -132,8 +132,6 @@ export class WSClient {
   sendHeartbeat(): void {
     this.send({
       type: 'heartbeat',
-      gameId: this.options.gameId,
-      playerId: this.options.playerId,
     });
   }
 }

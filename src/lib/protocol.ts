@@ -5,8 +5,11 @@ export interface WSMessage {
   payload?: any;
 }
 
-export interface OutgoingMessage extends WSMessage {
+export interface OutgoingMessage {
   type: 'join_game' | 'leave_game' | 'request_state' | 'place_tiles' | 'heartbeat';
+  player_id?: string;
+  player_name?: string;
+  tiles?: any;
 }
 
 export interface IncomingMessage extends WSMessage {

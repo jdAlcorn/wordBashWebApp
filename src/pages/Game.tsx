@@ -12,7 +12,7 @@ import { IncomingMessage } from '../lib/protocol';
 export function Game() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { playerId, gameId } = useSessionStore();
+  const { playerId, gameId, playerName } = useSessionStore();
   const {
     connectionStatus,
     stagedPlacements,
@@ -67,6 +67,7 @@ export function Game() {
       onStatusChange: setConnectionStatus,
       gameId,
       playerId,
+      playerName,
     });
 
     wsClientRef.current.connect();

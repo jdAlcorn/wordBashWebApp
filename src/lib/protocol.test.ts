@@ -18,13 +18,13 @@ describe('Protocol Types', () => {
   it('should validate outgoing message structure', () => {
     const message: OutgoingMessage = {
       type: 'join_game',
-      gameId: 'GAME123',
-      playerId: 'player-1'
+      player_id: 'player-1',
+      player_name: 'Test Player'
     };
 
     expect(message.type).toBe('join_game');
-    expect(message.gameId).toBe('GAME123');
-    expect(message.playerId).toBe('player-1');
+    expect(message.player_id).toBe('player-1');
+    expect(message.player_name).toBe('Test Player');
   });
 
   it('should validate tile placement structure', () => {
