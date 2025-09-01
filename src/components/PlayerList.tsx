@@ -7,33 +7,31 @@ export function PlayerList() {
 
   if (players.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-lg font-semibold mb-2">Players</h3>
-        <p className="text-gray-500">No players connected</p>
+      <div>
+        <p className="text-white/60 text-sm">No players connected</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <h3 className="text-lg font-semibold mb-2">Players ({players.length})</h3>
-      <div className="space-y-2">
+    <div>
+      <div className="space-y-3">
         {players.map((player) => (
           <div
             key={player.id}
-            className={`flex items-center justify-between p-2 rounded ${
-              player.id === playerId ? 'bg-blue-100' : 'bg-gray-50'
+            className={`flex items-center justify-between p-3 rounded-lg transition-colors ${
+              player.id === playerId ? 'bg-blue-500/20 border border-blue-400/30' : 'bg-white/5 border border-white/10'
             } ${
-              currentTurn === player.id ? 'ring-2 ring-green-400' : ''
+              currentTurn === player.id ? 'ring-2 ring-green-400/50' : ''
             }`}
           >
-            <span className="font-medium">{player.name}</span>
+            <span className="font-medium text-white">{player.name}</span>
             <div className="flex items-center space-x-2">
               {player.id === playerId && (
-                <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded">You</span>
+                <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">You</span>
               )}
               {currentTurn === player.id && (
-                <span className="text-xs bg-green-500 text-white px-2 py-1 rounded">Turn</span>
+                <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full animate-pulse">Turn</span>
               )}
             </div>
           </div>
