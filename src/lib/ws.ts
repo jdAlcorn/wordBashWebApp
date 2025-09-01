@@ -39,6 +39,7 @@ export class WSClient {
     this.ws.onmessage = (event) => {
       try {
         const message: IncomingMessage = JSON.parse(event.data);
+        console.log('🟢 WebSocket RECEIVE:', message);
         this.options.onMessage(message);
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
@@ -96,6 +97,7 @@ export class WSClient {
 
   private send(message: OutgoingMessage): void {
     if (this.ws?.readyState === WebSocket.OPEN) {
+      console.log('🔵 WebSocket SEND:', message);
       this.ws.send(JSON.stringify(message));
     }
   }
